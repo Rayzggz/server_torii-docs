@@ -1,33 +1,29 @@
 ---
 home: true
-title: Home
+title: ⛩️ Server Torii
 heroImage: https://vuejs.press/images/hero.png
 actions:
   - text: Get Started
     link: /get-started.html
     type: primary
 
-  - text: Introduction
-    link: https://vuejs.press/guide/introduction.html
+  - text: GitHub
+    link: https://github.com/Rayzggz/server_torii
     type: secondary
 
 features:
-  - title: Simplicity First
-    details: Minimal setup with markdown-centered project structure helps you focus on writing.
-  - title: Vue-Powered
-    details: Enjoy the dev experience of Vue, use Vue components in markdown, and develop custom themes with Vue.
-  - title: Performant
-    details: VuePress generates pre-rendered static HTML for each page, and runs as an SPA once a page is loaded.
-  - title: Themes
-    details: Providing a default theme out of the box. You can also choose a community theme or create your own one.
-  - title: Plugins
-    details: Flexible plugin API, allowing plugins to provide lots of plug-and-play features for your site.
-  - title: Bundlers
-    details: Default bundler is Vite, while Webpack is also supported. Choose the one you like!
+  - title: Minimal Setup
+    details: Easily integrates with existing Nginx or OpenResty setups — no need for extra proxy services
+  - title: High Performance
+    details: Efficient mitigation engine powered by finely tuned algorithms to handle massive traffic surges
+  - title: Distributed Architecture
+    details: Supports distributed deployment for scalable, multi-node mitigation — ideal for high-volume environments
+  - title: Crawler Friendly
+    details: Automatically verifies and allows legitimate search engine bots to avoid blocking beneficial traffic
+  - title: HTTP Flood Mitigation
+    details: Detects and mitigates HTTP Flood attacks based on behavioral analysis
+  - title: CAPTCHA Challenge
+    details: Protects your site with interactive CAPTCHA challenges to block malicious traffic
 
-footer: MIT Licensed | Copyright © 2018-present VuePress Community
+footer: Apache-2.0 license | Copyright © 2025-present Roi Feng
 ---
-
-This is the content of home page. Check [Home Page Docs][default-theme-home] for more details.
-
-[default-theme-home]: https://vuejs.press/reference/default-theme/frontmatter.html#home-page
