@@ -4,7 +4,7 @@ title: ⛩️ Server Torii
 heroImage: https://vuejs.press/images/hero.png
 actions:
   - text: 快速上手
-    link: /zh/get-started.html
+    link: /zh/guide/home.html
     type: primary
 
   - text: Github

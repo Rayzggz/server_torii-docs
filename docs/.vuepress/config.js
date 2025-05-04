@@ -45,12 +45,19 @@ export default defineUserConfig({
         selectLanguageText: 'Select Language / 选择语言',
         selectLanguageName: '简体中文',
         sidebar: {
-          '/zh/guide/': [
+          '/zh/': [
             {
               text: '指南',
               children: [
                   '/zh/guide/home.md',
                 '/zh/guide/install.md',
+                '/zh/guide/configuration.md',
+              ],
+            },
+            {
+              text: '开发',
+              children: [
+                '/zh/development/roadmap.md',
               ],
             },
           ],
