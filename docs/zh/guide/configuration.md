@@ -96,6 +96,7 @@ connecting_captcha_status_headers: # 验证码状态头部 通过这个头部来
 hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
 
 ### HTTPFlood.yml
+当前此功能无法关闭 可以设置为 一个很大的值来关闭， 使用 1s 来减少性能损耗
 #### `HTTPFloodSpeedLimit`
 `  - "150/10s"`
 
@@ -106,7 +107,7 @@ hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
 一个速率限制器，表示每个IP在 10 秒内允许 50 次相同的 URI ，超过这个限制会返回 429 错误
 这个配置可以很好的缓解对于同一个 URI 的攻击
 
-###config/rules/IP_AllowList.conf
+### IP_AllowList.conf
 IP 允许列表 
 
 一行一个IP 支持 CIDR 格式

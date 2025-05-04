@@ -28,10 +28,28 @@ export default defineUserConfig({
       '/': {
         navbar: [
           { text: 'Home', link: '/' },
-          { text: 'Getting started', link: '/get-started.html' },
+          { text: 'Getting started', link: '/guide/home.html' },
         ],
         selectLanguageText: '选择语言 / Select Language',
         selectLanguageName: 'English',
+        sidebar: {
+          '/': [
+            {
+              text: 'Guide',
+              children: [
+                '/guide/home.md',
+                '/guide/install.md',
+                '/guide/configuration.md',
+              ],
+            },
+            {
+              text: 'Development',
+              children: [
+                '/development/roadmap.md',
+              ],
+            },
+          ],
+        }
       },
 
       /**
@@ -40,7 +58,7 @@ export default defineUserConfig({
       '/zh/': {
         navbar: [
           { text: '首页', link: '/zh/' },
-          { text: '快速上手', link: '/zh/get-started.html' },
+          { text: '快速上手', link: '/zh/guide/home.html' },
         ],
         selectLanguageText: 'Select Language / 选择语言',
         selectLanguageName: '简体中文',
