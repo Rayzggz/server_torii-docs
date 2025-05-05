@@ -19,7 +19,7 @@ export default defineUserConfig({
 
   theme: defaultTheme({
     logo: '/images/shinto_shrine.png',
-    repo: "https://github.com/Rayzggz/server_torii-docs",
+    repo: "https://github.com/Rayzggz/server_torii",
     repoLabel: "Github",
     locales: {
       /**
