@@ -1,7 +1,7 @@
 ---
 home: true
-title: ⛩️ Server Torii
-heroImage: https://vuejs.press/images/hero.png
+title: Server Torii
+heroImage: /images/shinto_shrine.png
 actions:
   - text: Get Started
     link: /guide/home.html

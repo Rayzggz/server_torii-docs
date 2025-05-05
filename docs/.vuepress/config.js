@@ -6,20 +6,20 @@ export default defineUserConfig({
   locales: {
     '/': {
       lang: 'en-US',
-      title: '⛩️ Server Torii',
+      title: 'Server Torii',
       description: 'High-performance distributed lightweight DDoS mitigation software',
     },
 
     '/zh/': {
       lang: 'zh-CN',
-      title: '⛩️ Server Torii',
+      title: 'Server Torii',
       description: '高性能、分布式、轻量的 DDoS 缓解清洗程序',
     },
   },
 
   theme: defaultTheme({
-    logo: 'https://vuejs.press/images/hero.png',
-    repo: "https://github.com/Rayzggz/server_torii",
+    logo: '/images/shinto_shrine.png',
+    repo: "https://github.com/Rayzggz/server_torii-docs",
     repoLabel: "Github",
     locales: {
       /**
