@@ -22,6 +22,8 @@ cd server_torii
 
 Edit the configuration file according to the Configuration Guide.
 
+[Basic Quick Setup](/guide/configuration.html#basic-quick-setup)
+
 4. Build and install
 
 The Makefile provides an install target which:
