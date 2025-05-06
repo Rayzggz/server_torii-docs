@@ -1,5 +1,12 @@
 # Installation
 
+::: warning
+Server Torii is currently actively adding new features and improving some existing features. 
+It's ready to be used to protect your site, but during version updates, there may be some breaking changes. 
+Therefore, Make sure to read the Upgrade Guide when updating.
+:::
+
+
 The installation contain two parts: ngx_torii and server_torii.
 
 ngx_torii is an Nginx module that serves as a connector for server_torii, forwarding requests from Nginx to server_torii.
