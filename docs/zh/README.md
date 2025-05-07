@@ -1,7 +1,7 @@
 ---
 home: true
 title: ⛩️ Server Torii
-heroImage: https://vuejs.press/images/hero.png
+heroImage: /images/shinto_shrine.png
 actions:
   - text: 快速上手
     link: /zh/guide/home.html
