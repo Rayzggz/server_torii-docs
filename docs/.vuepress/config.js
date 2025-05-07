@@ -41,6 +41,7 @@ export default defineUserConfig({
                 '/guide/home.md',
                 '/guide/install.md',
                 '/guide/configuration.md',
+                '/guide/faq.md',
               ],
             },
             {
@@ -71,6 +72,7 @@ export default defineUserConfig({
                   '/zh/guide/home.md',
                 '/zh/guide/install.md',
                 '/zh/guide/configuration.md',
+                '/zh/guide/faq.md',
               ],
             },
             {
