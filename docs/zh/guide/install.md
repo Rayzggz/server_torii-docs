@@ -98,6 +98,13 @@ $ make install
 * 描述： `Server Torii Nginx Module`
 * 参数： `--add-module=/www/server/nginx/src/ngx_torii`
 * 前置脚本
+::: danger 警告
+
+如果您的服务器位于中华人民共和国境内
+
+您的服务器可能无法从 GitHub 上下载代码 从而导致安装失败
+:::
+
 ```sh
 mkdir -p /www/server/nginx/src
 cd /www/server/nginx/src

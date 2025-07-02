@@ -45,6 +45,12 @@ export default defineUserConfig({
               ],
             },
             {
+                text: 'Advanced',
+                children: [
+                    '/advanced/external_migration.md',
+                ],
+            },
+            {
               text: 'Development',
               children: [
                 '/development/roadmap.md',
@@ -73,6 +79,12 @@ export default defineUserConfig({
                 '/zh/guide/install.md',
                 '/zh/guide/configuration.md',
                 '/zh/guide/faq.md',
+              ],
+            },
+            {
+              text: '进阶配置',
+              children: [
+                '/zh/advanced/external_migration.md',
               ],
             },
             {

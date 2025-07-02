@@ -74,8 +74,36 @@ connecting_uri_headers: # URI header, used to determine the URI of the request.
 connecting_captcha_status_headers: # Turn on or Turn off the CAPTCHA
   - "Torii-Captcha-Status"
 ```
+---
 
-### CAPTCHA.yml 
+### Server.yml
+```yaml
+CAPTCHA:
+  secret_key: "0378b0f84c4310279918d71a5647ba5d"
+  captcha_validate_time: 600
+  captcha_challenge_session_timeout: 120
+  hcaptcha_secret: ""
+HTTPFlood:
+  HTTPFloodSpeedLimit:
+    - "150/10s"
+  HTTPFloodSameURILimit:
+    - "50/10s"
+VerifyBot:
+  verify_google_bot: true
+  verify_bing_bot: true
+  verify_baidu_bot: true
+  verify_yandex_bot: true
+  verify_sogou_bot: true
+  verify_apple_bot: true
+ExternalMigration:
+  enabled: false
+  redirect_url: "https://example.com/migration"
+  secret_key: "0378b0f84c4310279918d71a5647ba5d"
+  session_timeout: 1800
+```
+
+#### CAPTCHA：
+CAPTCHA settings, used to challenge users
 #### `secret_key`
 A shared key for encrypting/decrypting the clearance cookie. In clustered setups, all nodes must use the same key to validate cookies.
 #### `captcha_validate_time`
@@ -85,7 +113,8 @@ Time (in seconds) allowed to complete the captcha after the challenge page loads
 #### `hcaptcha_secret`
 Your hCaptcha secret key for server‑side verification.
 
-### HTTPFlood.yml
+#### HTTPFlood：
+Speed limit settings for HTTP flood protection.
 This feature cannot be disabled in current version. To turn it off with minimize the influence, set extremely high limits and very short intervals. (like 1000000/1s )
 #### `HTTPFloodSpeedLimit`
 `  - "150/10s"`
@@ -96,24 +125,7 @@ Allows up to 150 requests per IP every 10 seconds (429 on excess).
 
 Allows up to 50 requests per IP to the same URI every 10 seconds (429 on excess). Helps mitigate URI‑focused floods.
 
-### IP_AllowList.conf
-One IP (or CIDR) per line
-Allowlisted addresses bypass all checks.
-
-### IP_BlockList.conf
-One IP (or CIDR) per line
-Blocklisted addresses are immediately blocked.
-
-### URL_AllowList.conf
-One URL pattern (regex) per line
-Allowlisted URIs are immediately blocked.
-
-### URL_BlockList.conf
-One URL pattern (regex) per line
-Blocklisted URIs are immediately blocked.
-
-
-### VerifyBot.yml
+#### VerifyBot:
 Use User‑Agent and reverse‑DNS to verify legitimate crawlers:
 
 verify_google_bot # Googlebot
@@ -126,7 +138,54 @@ verify_yandex_bot # Yandex crawler
 
 verify_sogou_bot # Sogou spider
 
-verify_apple_bot # Applebot 
+verify_apple_bot # Applebot
+
+#### ExternalMigration:
+If the traffic is too high and the server cannot handle it, this configuration can be used to redirect requests to external mitigation facilities such as Cloudflare or a waiting room.
+After verification/waiting through an external service, requests will return to Server Torii for access.
+
+#### `enabled`
+Enable if set to `true`.
+
+#### `redirect_url`
+The URL address for redirection.
+if the user does not have a valid cookie, they will be redirected to this address.
+
+#### `secret_key`
+A key used for encrypting and decrypting the redirect cookie.
+This cookie will be set in the browser after the user has been verified and is mainly used to determine whether the user has passed verification.
+In distributed deployments, as long as all nodes share the same key, different nodes can validate the cookies.
+
+#### `session_timeout`
+The validity period of the cookie issued after successful verification at external mitigation facilities, measured in seconds.
+
+For details on configuring external mitigation services, please refer to [External Migration](../advanced/external_migration.md).
+
+---
+
+### IP_AllowList.conf
+One IP (or CIDR) per line
+Allowlisted addresses bypass all checks.
+
+---
+
+### IP_BlockList.conf
+One IP (or CIDR) per line
+Blocklisted addresses are immediately blocked.
+
+---
+
+### URL_AllowList.conf
+One URL pattern (regex) per line
+Allowlisted URIs are immediately blocked.
+
+---
+
+### URL_BlockList.conf
+One URL pattern (regex) per line
+Blocklisted URIs are immediately blocked.
+
+---
 
 ###  ngx_torii Module Configuration
 The ngx_torii module uses the similar directives as Nginx’s auth_request module.

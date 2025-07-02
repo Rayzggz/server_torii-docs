@@ -1,6 +1,5 @@
 # Development Plan
 
-- Challenge with external mitigate services
 - Waiting room
 - Threat score
 - Designated URL CAPTCHA

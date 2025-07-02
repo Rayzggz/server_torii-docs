@@ -84,7 +84,35 @@ connecting_captcha_status_headers: # 验证码状态头部 通过这个头部来
   - "Torii-Captcha-Status"
 ```
 
-### CAPTCHA.yml 
+### Server.yml
+```yaml
+CAPTCHA:
+  secret_key: "0378b0f84c4310279918d71a5647ba5d"
+  captcha_validate_time: 600
+  captcha_challenge_session_timeout: 120
+  hcaptcha_secret: ""
+HTTPFlood:
+  HTTPFloodSpeedLimit:
+    - "150/10s"
+  HTTPFloodSameURILimit:
+    - "50/10s"
+VerifyBot:
+  verify_google_bot: true
+  verify_bing_bot: true
+  verify_baidu_bot: true
+  verify_yandex_bot: true
+  verify_sogou_bot: true
+  verify_apple_bot: true
+ExternalMigration:
+  enabled: false
+  redirect_url: "https://example.com/migration"
+  secret_key: "0378b0f84c4310279918d71a5647ba5d"
+  session_timeout: 1800
+```
+
+
+#### CAPTCHA:
+验证码质询 用于拦截恶意请求
 #### `secret_key`
 一个密钥 用于加密和解密人机验证的 cookie，这个cookie会在用户进行和通过人机验证后设置到浏览器中，主要用于判断用户是否通过了人机验证。
 如果在分布式部署中，只要所有节点的密钥都是一样的，不同节点都可以验证 cookie 的有效性
@@ -95,7 +123,9 @@ connecting_captcha_status_headers: # 验证码状态头部 通过这个头部来
 #### `hcaptcha_secret`
 hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
 
-### HTTPFlood.yml
+
+#### HTTPFlood:
+速率限制 用于CC 防御
 当前此功能无法关闭 可以设置为 一个很大的值来关闭， 使用 1s 来减少性能损耗
 #### `HTTPFloodSpeedLimit`
 `  - "150/10s"`
@@ -107,27 +137,7 @@ hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
 一个速率限制器，表示每个IP在 10 秒内允许 50 次相同的 URI ，超过这个限制会返回 429 错误
 这个配置可以很好的缓解对于同一个 URI 的攻击
 
-### IP_AllowList.conf
-IP 允许列表 
-
-一行一个IP 支持 CIDR 格式
-
-### IP_BlockList.conf
-IP 禁止列表
-
-一行一个IP 支持 CIDR 格式
-
-### URL_AllowList.conf
-URL 允许列表
-
-一行一个URL 支持正则表达式
-
-### URL_BlockList.conf
-URL 禁止列表
-
-一行一个URL 支持正则表达式
-
-### VerifyBot.yml
+#### VerifyBot:
 通过 UA 和 反向DNS 来验证是否是真实的搜索引擎爬虫
 
 verify_google_bot 验证谷歌爬虫
@@ -142,9 +152,56 @@ verify_sogou_bot 验证搜狗爬虫
 
 verify_apple_bot 验证苹果爬虫
 
+#### ExternalMigration:
+如果流量过大，服务器无法承载，可以使用这个配置将请求重定向到外部缓解设施
+例如 Cloudflare 或者之间等候室（Waiting Room）等
+通过外部服务验证/等候后再返回到 Server Torii 进行访问
+
+#### `enabled`
+此项功能是否启用 true 为 启用
+
+#### `redirect_url`
+重定向的 URL 地址，如果用户没有合法的 cookie，则会重定向到这个地址
+
+#### `secret_key`
+一个密钥 用于加密和解密重定向的 cookie，这个cookie会在用户进行和通过验证后设置到浏览器中，主要用于判断用户是否通过了验证。 如果在分布式部署中，只要所有节点的密钥都是一样的，不同节点都可以验证 cookie 的有效性
+
+#### `session_timeout`
+在外部缓解设施验证通过后 发放的 cookie 的有效时间，单位是秒，即验证通过后，间隔多久后需要重新验证
+
+外部缓解服务配置流程请参考 [External Migration](../advanced/external_migration.md)
+
+---
+
+### IP_AllowList.conf
+IP 允许列表 
+
+一行一个IP 支持 CIDR 格式
+
+---
+### IP_BlockList.conf
+IP 禁止列表
+
+一行一个IP 支持 CIDR 格式
+
+---
+### URL_AllowList.conf
+URL 允许列表
+
+一行一个URL 支持正则表达式
+
+---
+
+### URL_BlockList.conf
+URL 禁止列表
+
+一行一个URL 支持正则表达式
+
+---
+
 ### Nginx 模块 ngx_torii配置
 
-工作方式可以参照 `https://nginx.org/en/docs/http/ngx_http_auth_request_module.html`
+工作方式可以参考 `https://nginx.org/en/docs/http/ngx_http_auth_request_module.html`
 
 ```nginx
 Syntax:    torii_auth_request uri | off;
