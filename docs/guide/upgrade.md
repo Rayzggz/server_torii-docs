@@ -52,7 +52,7 @@ ExternalMigration:
 #### External Mitigation Service
 
 Server Torii now supports an external mitigation service. You can configure Server Torii to redirect users to an external service for verification.
-Please refer to the [External Mitigation Service Configuration](/advanced/external_migration.html) for setup instructions.
+Please refer to the [External Mitigation Service Configuration](../advanced/external_migration.md) for setup instructions.
 
 #### New Error Pages
 

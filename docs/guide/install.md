@@ -9,7 +9,7 @@ Therefore, Make sure to read the Upgrade Guide when updating.
 
 The installation contain two parts: ngx_torii and server_torii.
 
-ngx_torii is an Nginx module that serves as a connector for server_torii, forwarding requests from Nginx to server_torii.
+ngx_torii is a Nginx module that serves as a connector for server_torii, forwarding requests from Nginx to server_torii.
 
 ## Install server_torii
 
@@ -29,11 +29,11 @@ cd server_torii
 
 Edit the configuration file according to the Configuration Guide.
 
-[Basic Quick Setup](/guide/configuration.html#basic-quick-setup)
+[Basic Quick Setup](./configuration.md#basic-quick-setup)
 
 4. Build and install
 
-The Makefile provides an install target which:
+The Makefile provides an installation target which:
 - Compiles the binary in the current directory
 - Places the executable in this directory
 - Registers server_torii as a system service

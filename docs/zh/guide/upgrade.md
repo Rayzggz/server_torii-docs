@@ -50,7 +50,7 @@ ExternalMigration:
 
 #### 外部缓解服务
 Server Torii 现在支持外部缓解服务。你可以配置 Server Torii 将用户重定向到外部服务进行验证。
-请参照 [外部缓解服务配置](/advanced/external_migration.html) 进行配置。
+请参照 [外部缓解服务配置](../advanced/external_migration.md) 进行配置。
 
 #### 新增错误页面
 部分错误将会通过错误页面模板输出

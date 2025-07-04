@@ -9,6 +9,7 @@
 :::
 
 1. 复制 server_torii 下的 config_example 文件夹， 重命名为 config
+
 2. 修改 config/torii.yml 文件
 
 我们主要需要关注以下几个配置项：
@@ -135,7 +136,7 @@ hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
 `  - "50/10s"`
 
 一个速率限制器，表示每个IP在 10 秒内允许 50 次相同的 URI ，超过这个限制会返回 429 错误
-这个配置可以很好的缓解对于同一个 URI 的攻击
+这个配置可以很好地缓解对于同一个 URI 的攻击
 
 #### VerifyBot:
 通过 UA 和 反向DNS 来验证是否是真实的搜索引擎爬虫

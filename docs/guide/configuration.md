@@ -2,7 +2,7 @@
 
 ## Basic Quick Setup
 
-::: tip Tip
+::: tip
 The Basic Quick Setup focuses on the critical configuration items for running Server Torii. 
 It’s intended to help you get started quickly with the default configuration.
 For detailed usage, please refer to the subsequent sections.
