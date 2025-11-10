@@ -54,7 +54,7 @@ nginx version: nginx/1.21.4
 built by gcc 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
 built with OpenSSL 1.1.1w  11 Sep 2023
 TLS SNI support enabled
-configure arguments: --user=www --group=www --prefix=/www/server/nginx --add-module=/www/server/nginx/src/ngx_devel_kit --add-module=/www/server/nginx/src/lua_nginx_module --add-module=/www/server/nginx/src/ngx_cache_purge --add-module=/www/server/nginx/src/nginx-sticky-module --with-openssl=/www/server/nginx/src/openssl --with-pcre=pcre-8.43 --with-http_v2_module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_stub_status_module --with-http_ssl_module --with-http_image_filter_module --with-http_gzip_static_module --with-http_gunzip_module --with-ipv6 --with-http_sub_module --with-http_flv_module --with-http_addition_module --with-http_realip_module --with-http_mp4_module --with-http_auth_request_module --add-module=/www/server/nginx/src/ngx_http_substitutions_filter_module-master --with-ld-opt=-Wl,-E --with-cc-opt=-Wno-error --with-ld-opt=-ljemalloc --with-http_dav_module --add-module=/www/server/nginx/src/nginx-dav-ext-module```
+configure arguments: --user=www --group=www --prefix=/www/server/nginx --add-module=/www/server/nginx/src/ngx_devel_kit --add-module=/www/server/nginx/src/lua_nginx_module --add-module=/www/server/nginx/src/ngx_cache_purge --add-module=/www/server/nginx/src/nginx-sticky-module --with-openssl=/www/server/nginx/src/openssl --with-pcre=pcre-8.43 --with-http_v2_module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_stub_status_module --with-http_ssl_module --with-http_image_filter_module --with-http_gzip_static_module --with-http_gunzip_module --with-ipv6 --with-http_sub_module --with-http_flv_module --with-http_addition_module --with-http_realip_module --with-http_mp4_module --with-http_auth_request_module --add-module=/www/server/nginx/src/ngx_http_substitutions_filter_module-master --with-ld-opt=-Wl,-E --with-cc-opt=-Wno-error --with-ld-opt=-ljemalloc --with-http_dav_module --add-module=/www/server/nginx/src/nginx-dav-ext-module
 ```
 
 请使用 `configure arguments:` 后面的内容，下文中将使用 `ARG` 来代替这块内容。
@@ -76,18 +76,12 @@ $ make install
 ```
 
 
-## 宝塔面板安装 ngx_torii
+## 宝塔面板 自动安装 ngx_torii
 
 ::: danger 警告
+这个方法需要卸载当前的 Nginx 并重新安装，可能会对正在运行的服务造成影响
 
-使用宝塔面板软件商店安装可能会导致较长时间的服务中断
-
-如希望尽量减少对服务的影响，并且当前 Nginx 在安装时选择的是编译安装，可以选用前述的 编译安装
-
-宝塔面板默认 Nginx  路径 `/www/server/nginx/src/`
-
-编译完成后使用 `/www/server/nginx/src/objs/nginx` 这个编译后的可执行文件 替换 `/www/server/nginx/sbin/` 内的宝塔Nginx文件，然后重启Nginx
-
+如希望尽量减少对服务的影响，并且当前 Nginx 在安装时选择的是编译安装，可以使用下面的“宝塔面板 替换安装 ngx_torii”指南
 :::
 
 
@@ -97,12 +91,14 @@ $ make install
 * 名称： `ngx_torii`
 * 描述： `Server Torii Nginx Module`
 * 参数： `--add-module=/www/server/nginx/src/ngx_torii`
-* 前置脚本
+* 前置脚本：
 ::: danger 警告
 
 如果您的服务器位于中华人民共和国境内
 
 您的服务器可能无法从 GitHub 上下载代码 从而导致安装失败
+
+您可以将下面前置脚本的 `git clone https://github.com/Rayzggz/ngx_torii` 替换为GitHub镜像站点的地址
 :::
 
 ```sh
@@ -113,5 +109,69 @@ git clone https://github.com/Rayzggz/ngx_torii
 
 4. 按照宝塔的提示完成安装
 
+## 宝塔面板 替换安装 ngx_torii
+
+::: warning 警告
+使用这个方法需要保证您当前的 Nginx 是通过宝塔面板编译安装的
+如果 `/www/server/nginx/src` 文件夹内存在源码文件，则说明当前 Nginx 是通过编译安装的
+:::
+
+::: tip 如何获取编译参数
+
+编译安装需要知道当前的 Nginx 的编译参数，通过运行 `nginx -V` 获取
+例如：
+```
+# nginx -V
+
+nginx version: nginx/1.21.4
+built by gcc 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
+built with OpenSSL 1.1.1w  11 Sep 2023
+TLS SNI support enabled
+configure arguments: --user=www --group=www --prefix=/www/server/nginx --add-module=/www/server/nginx/src/ngx_devel_kit --add-module=/www/server/nginx/src/lua_nginx_module --add-module=/www/server/nginx/src/ngx_cache_purge --add-module=/www/server/nginx/src/nginx-sticky-module --with-openssl=/www/server/nginx/src/openssl --with-pcre=pcre-8.43 --with-http_v2_module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_stub_status_module --with-http_ssl_module --with-http_image_filter_module --with-http_gzip_static_module --with-http_gunzip_module --with-ipv6 --with-http_sub_module --with-http_flv_module --with-http_addition_module --with-http_realip_module --with-http_mp4_module --with-http_auth_request_module --add-module=/www/server/nginx/src/ngx_http_substitutions_filter_module-master --with-ld-opt=-Wl,-E --with-cc-opt=-Wno-error --with-ld-opt=-ljemalloc --with-http_dav_module --add-module=/www/server/nginx/src/nginx-dav-ext-module
+```
+
+请使用 `configure arguments:` 后面的内容，下文中将使用 `ARG` 来代替这块内容。
+
+:::
+
+请逐步按照下面的指南操作
+
+```sh
+# 1. 进入宝塔 Nginx 源码目录，下载 ngx_torii 模块代码
+#    如果您的服务器位于中华人民共和国境内
+#    您的服务器可能无法从 GitHub 上下载代码 从而导致安装失败
+#    您可以将下面的 git clone 地址替换为GitHub镜像站点的地址
+mkdir -p /www/server/nginx/src
+cd /www/server/nginx/src
+git clone https://github.com/Rayzggz/ngx_torii
 
 
+# 2. 宝塔提供的部分 Nginx 版本需要引入 LuaJIT 环境变量
+export LUAJIT_LIB=/usr/local/lib
+export LUAJIT_INC=/usr/local/include/luajit-2.1/
+export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+
+# 3. 配置 Nginx，添加 ngx_torii 模块
+# 这里的 ARG 请替换为上文获取到的编译参数
+./configure ARG --add-module=/www/server/nginx/src/ngx_torii
+
+# 4. 编译 Nginx
+make
+
+# 5. 停止 Nginx 服务
+/etc/init.d/nginx stop
+
+# 6. 备份当前 Nginx 可执行文件
+mv /www/server/nginx/sbin/nginx  /www/server/nginx/sbin/nginx.bak
+
+# 7. 安装新编译的 Nginx 可执行文件
+cp /www/server/nginx/src/objs/nginx /www/server/nginx/sbin/
+
+# 8. 启动 Nginx 服务
+/etc/init.d/nginx start
+
+# 9. 验证 Nginx 是否正确加载 ngx_torii 模块
+nginx -V
+编译参数的末尾应该包含 --add-module=/www/server/nginx/src/ngx_torii
+
+```
