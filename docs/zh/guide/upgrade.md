@@ -10,6 +10,52 @@ Server Torii 目前仍在积极的添加新的功能，并且完善部分现有�
 
 同时此升级指南将会记录每个版本的功能性更新，帮助对新功能进行快速配置
 
+## 升级到 1.3.0
+
+### 破坏更新
+
+#### 修改配置文件结构
+
+`Server.yml` 已更新 
+
+假设我们将 server_torii 放在 `/www/server_torii` 目录下
+config/torii.yml 文件内容如下：
+
+```yml
+    port: "25555"  # Server Torii 监听端口  此端口不需要公开 仅供 Nginx 访问
+    web_path: "/torii" # Server Torii 访问路径
+    error_page: "/www/server_torii/config/error_page" # 错误页面存放路径 
+    log_path: "/www/server_torii/log/" # 日志存放路径
+    node_name: "Server Torii"
+    connecting_host_headers:
+      - "Torii-Real-Host"
+    connecting_ip_headers:
+      - "Torii-Real-IP"
+    connecting_uri_headers:
+      - "Torii-Original-URI"
+    connecting_feature_control_headers:
+      - "Torii-Feature-Control"
+
+    sites:
+      - host: "default_site" #这个是默认站点配置 对应没有匹配到其他站点的请求
+        rule_path: "/www/server_torii/config/rules/default"
+```
+
+前版本的 `config/rules/` 中的其他配置文件已移动到站点规则目录下
+按照匹配规则 放在 `config/rules/default/` 目录 或者 其他站点规则目录下 需要与 `torii.yml` 中的 `rule_path` 配置一致
+
+#### 修改 Nginx 配置文件
+`ngx_torii` 模块已更新 需要拉取最新仓库重新编译 Nginx
+
+同样的，Nginx 配置文件也需要更新，请参考配置指南
+
+
+
+## 升级到 1.2.0
+
+此版本已撤销， 请直接升级到 1.3.0
+
+
 ##  升级到 1.1.0
 
 ### 破坏更新

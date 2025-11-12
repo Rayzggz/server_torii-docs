@@ -81,7 +81,6 @@ hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
 
 ### HTTPFlood:
 速率限制 用于CC 防御
-当前此功能无法关闭 可以设置为 一个很大的值来关闭， 使用 1s 来减少性能损耗
 #### `HTTPFloodSpeedLimit`
 `  - "150/10s"`
 
@@ -109,7 +108,7 @@ verify_apple_bot 验证苹果爬虫
 
 #### ExternalMigration:
 如果流量过大，服务器无法承载，可以使用这个配置将请求重定向到外部缓解设施
-例如 Cloudflare 或者之间等候室（Waiting Room）等
+例如 Cloudflare 或者等候室（Waiting Room）等
 通过外部服务验证/等候后再返回到 Server Torii 进行访问
 
 #### `enabled`
@@ -185,26 +184,67 @@ location /
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection $connection_upgrade;
     proxy_http_version 1.1;
-    torii_auth_request /torii/checker;   #这一行将所有通过的请求都发送到 /torii/checker 这个地址
+    torii_auth_request /torii/checker;
+    error_page 445 = @torii_page;
+    torii_auth_request_set $torii_action_uri $upstream_http_torii_action; 
 }
 
 # 下面这些配置放在 server 块中 用于接收 torii_auth_request 配置的验证请求
 # proxy_set_header 是与 torii.yml 中的配置项对应的 用于传递对应的信息
+# 后面会介绍 Torii-Feature-Control 头部的用法 这个投币需要放在 /torii/checker 和 /torii 两个 location 中 并且值要保持一致
+# 可以把这个 proxy_set_header Torii-Feature-Control "________"; 放到一个单独的文件中，然后通过 include 引入 以保证两个 location 中的值一致
 location /torii/checker {
-    proxy_pass http://127.0.0.1:25555;
+    proxy_pass http://127.0.0.1:25555/torii/checker;
     proxy_set_header Torii-Real-IP $remote_addr;
     proxy_pass_request_body off;
     proxy_set_header Content-Length "";
     proxy_set_header Torii-Original-URI $request_uri;
     proxy_set_header Torii-Real-Host $host;
-    proxy_set_header Torii-Captcha-Status on; # 这个配置是用于开启人机验证的 关则设置为 off
+    proxy_set_header Torii-Feature-Control "________";
 }
 
 # 下面这个配置是用于处理其他 Server Torii 的请求 例如人机验证 健康检查等
+# 后面会介绍 Torii-Feature-Control 头部的用法 这个投币需要放在 /torii/checker 和 /torii 两个 location 中 并且值要保持一致
+# 可以把这个 proxy_set_header Torii-Feature-Control "________"; 放到一个单独的文件中，然后通过 include 引入 以保证两个 location 中的值一致
+location @torii_page {
+    proxy_pass http://127.0.0.1:25555/torii/checker_pages/$torii_action_uri;
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
+    proxy_set_header Torii-Real-IP $remote_addr;
+    proxy_set_header Torii-Original-URI $request_uri;
+    proxy_set_header Torii-Real-Host $host;
+    proxy_intercept_errors off;
+}
+
 location /torii {
     proxy_pass http://127.0.0.1:25555;
     proxy_set_header Torii-Real-IP $remote_addr;
     proxy_set_header Torii-Original-URI $request_uri;
     proxy_set_header Torii-Real-Host $host;
+    proxy_intercept_errors off;
+    proxy_set_header Torii-Feature-Control "________";
 }
 ```
+
+### Torii-Feature-Control 头部的用法
+这个头部用于控制请求的功能开关
+这个头部的值是一个字符串 由多个字符组成 每个字符代表一个功能的开关
+Server Torii 在处理请求时会根据这个头部的值来决定启用或者禁用某些功能
+这个开关控制只会对当前请求生效，不会影响全局配置文件中的设置
+
+每个字符的位置和含义如下：
+- 第1个字符：IPAllow 功能开关
+- 第2个字符：IPBlock 功能开关
+- 第3个字符：URLAllow 功能开关
+- 第4个字符：URLBlock 功能开关
+- 第5个字符：VerifyBot 功能开关
+- 第6个字符：HTTPFlood 功能开关
+- 第7个字符：CAPTCHA 功能开关
+- 第8个字符：ExternalMigration 功能开关
+
+每个字符的取值可以是：
+- '1'：启用对应的功能，这个会覆盖配置文件中的设置
+- '0'：禁用对应的功能，这个会覆盖配置文件中的设置
+- '_'：继承默认配置文件中的设置
+例如：
+- "1_0___1_"：启用 IPAllow 功能，禁用 URLAllow 功能，启用 CAPTCHA 功能，其他功能继承默认配置
