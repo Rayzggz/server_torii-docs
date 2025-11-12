@@ -16,7 +16,7 @@ Server Torii 目前仍在积极的添加新的功能，并且完善部分现有�
 
 #### 修改配置文件结构
 
-`Server.yml` 已更新 
+`torii.yml` 已更新 
 
 假设我们将 server_torii 放在 `/www/server_torii` 目录下
 config/torii.yml 文件内容如下：

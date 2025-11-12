@@ -10,7 +10,50 @@ If you are upgrading across multiple versions, please follow the upgrade guides 
 
 This guide also documents the functional updates for each version to help you quickly configure new features.
 
-## Upgrading to 1.1.0
+
+### Upgrade to 1.3.0
+
+### Breaking Changes
+
+#### Modify Configuration File Structure
+
+`torii.yml` has been updated.
+
+Assuming we place `server_torii` in the `/www/server_torii` directory, the content of the `config/torii.yml` file is as follows:
+
+```yml
+    port: "25555"  # Server Torii listening port; not exposed publicly, only Nginx needs access
+    web_path: "/torii" # Base URL path for Server Torii
+    error_page: "/www/server_torii/config/error_page" # Directory for custom error pages
+    log_path: "/www/server_torii/log/" # Directory for storing logs
+    node_name: "Server Torii"
+    connecting_host_headers:
+      - "Torii-Real-Host"
+    connecting_ip_headers:
+      - "Torii-Real-IP"
+    connecting_uri_headers:
+      - "Torii-Original-URI"
+    connecting_feature_control_headers:
+      - "Torii-Feature-Control"
+      -
+    sites:
+      - host: "default_site" #This is the default site configuration corresponding to requests that do not match any other sites.
+        rule_path: "/www/server_torii/config/rules/default"
+```
+
+Other configuration files from the previous version's `config/rules/` have been moved to the site rules directory.
+They should be placed in either the `config/rules/default/` directory or other site rules directories, consistent with the `rule_path` configuration in `torii.yml`.
+
+#### Modify Nginx Configuration File
+The `ngx_torii` module has been updated. You need to pull the latest repository and recompile Nginx.
+
+Similarly, the Nginx configuration file also needs to be updated. Please refer to the configuration guide.
+
+## Upgrade to 1.2.0
+
+This version has been withdrawn, please upgrade directly to 1.3.0.
+
+## Upgrade to 1.1.0
 
 ### Breaking Changes
 

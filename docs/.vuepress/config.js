@@ -48,6 +48,7 @@ export default defineUserConfig({
                         {
                             text: 'Advanced',
                             children: [
+                                'advanced/configuration_advanced.md',
                                 '/advanced/external_migration.md',
                             ],
                         },
