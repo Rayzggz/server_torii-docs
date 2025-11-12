@@ -11,10 +11,12 @@ Server Torii is like a Torii gate for the digital world, quietly standing guard 
 ## Environment Requirements
 
 Server Torii was developed based on the following environment:
-- Nginx 1.21.4
-- Go 1.23.5
+- Nginx 1.28.0
+- Go 1.24.0
 
-Generally, it should be compatible with all subsequent versions.
+Technically, Server Torii is compatible with the following environments:
+- Nginx 1.10 and above
+- Go 1.24.0 and above
 
 ## How to contribute to this project?
 You can submit pull requests:
