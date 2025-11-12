@@ -86,6 +86,7 @@ export default defineUserConfig({
                         {
                             text: '进阶配置',
                             children: [
+                                '/zh/advanced/configuration_advanced.md',
                                 '/zh/advanced/external_migration.md',
                             ],
                         },
