@@ -24,7 +24,7 @@ cd server_torii
 
 3. 参照配置指南修改配置文件
 
-[基础快速配置](./configuration.md#基础快速配置)
+[快速开始配置](./configuration.md)
 
 4. 使用Makefile编译
    install 目标会在当前工作目录进行编译 编译后的可执行程序将放置在当前目录下 并且将 server_torii 添加到系统服务中 最后会自动启动 server_torii 并将其添加到开机启动项中

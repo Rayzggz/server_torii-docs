@@ -29,7 +29,7 @@ cd server_torii
 
 Edit the configuration file according to the Configuration Guide.
 
-[Basic Quick Setup](./configuration.md#basic-quick-setup)
+[Quick Setup](./configuration.md)
 
 4. Build and install
 

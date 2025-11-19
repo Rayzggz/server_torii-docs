@@ -1,6 +1,6 @@
 # Configuration
 
-## Basic Quick Setup
+## Quick Setup
 
 ::: tip
 The Basic Quick Setup focuses on the critical configuration items for running Server Torii. 
