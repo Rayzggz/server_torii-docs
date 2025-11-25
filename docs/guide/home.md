@@ -8,6 +8,21 @@ A high-performance, distributed, lightweight DDoS mitigation and scrubbing progr
 
 Server Torii is like a Torii gate for the digital world, quietly standing guard in front of your server. 🛡️⛩️
 
+
+## ⭐ Features
+- Easy to integrate with existing Nginx or OpenResty
+- Distribute Compatible
+- HTTP FLOOD Mitigation
+- CAPTCHA Challenge
+- Crawlers Verification
+- Custom Error Page
+- External Mitigation (using services such as Cloudflare for mitigation)
+- IP Address Block List
+- IP Address Allow List
+- URL Block List
+- URL Allow List
+
+
 ## Environment Requirements
 
 Server Torii was developed based on the following environment:
