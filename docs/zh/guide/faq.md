@@ -16,3 +16,8 @@
 当前不支持在运行时修改配置。配置仅在启动时进行加载，运行时无法修改。
 修改配置后需要重启服务才能生效。
 
+## CDN 与 Server Torii 是否兼容？
+
+是的，Server Torii 可以与 CDN 一起使用。 只要确保使用 Nginx 模块 `ngx_http_realip_module` 来正确获取客户端的真实 IP 地址即可。
+并在 Nginx 接入 Server Torii 配置中通过 `proxy_set_header Torii-Real-IP $remote_addr;` 将真实 IP 地址传递给 Server Torii。
+
