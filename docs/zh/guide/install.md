@@ -4,6 +4,10 @@
 Server Torii 目前仍在积极的添加新的功能，并且完善部分现有功能的配置。你已经可以用它来保护你的站点，但是在版本更新的时候，有可能会发生一些破坏性更新。因此，在更新的时候，请注意参考更新指南。
 :::
 
+::: tip
+安装前，请确保你的服务器已经安装了适当的环境，详情请参照[环境准备](./prerequisites.md)
+:::
+
 安装分为两部分 ngx_torii  和 server_torii
 
 ngx_torii 是一个 Nginx 模块，是 server_torii 的连接器，用于将 Nginx 收到的请求发送给 server_torii 检查

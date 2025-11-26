@@ -39,6 +39,7 @@ export default defineUserConfig({
                             text: 'Guide',
                             children: [
                                 '/guide/home.md',
+                                '/guide/prerequisites.md',
                                 '/guide/install.md',
                                 '/guide/configuration.md',
                                 '/guide/faq.md',
@@ -78,6 +79,7 @@ export default defineUserConfig({
                             text: '指南',
                             children: [
                                 '/zh/guide/home.md',
+                                '/zh/guide/prerequisites.md',
                                 '/zh/guide/install.md',
                                 '/zh/guide/configuration.md',
                                 '/zh/guide/faq.md',

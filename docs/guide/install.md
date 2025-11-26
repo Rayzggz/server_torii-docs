@@ -6,6 +6,10 @@ It's ready to be used to protect your site, but during version updates, there ma
 Therefore, Make sure to read the Upgrade Guide when updating.
 :::
 
+::: tip
+Before installation, please ensure that your server has the appropriate environment set up. For details, please refer to [Environment Preparation](./prerequisites.md)
+:::
+
 
 The installation contain two parts: ngx_torii and server_torii.
 

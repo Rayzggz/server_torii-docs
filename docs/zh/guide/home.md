@@ -28,12 +28,17 @@ Server Torii 就像数字世界的鸟居，静静守护在你的服务器前。
 ## 环境要求
 
 Server Torii 基于以下环境开发：
+- Ubuntu 24.04 LTS
 - Nginx 1.28.0
 - Go 1.24.0
 
 在技术上，Server Torii 兼容以下环境：
+- 各种 Linux 发行版
 - Nginx 1.10 及以上版本
 - Go 1.21.0 及以上版本 （一般的，此版本之后的 Go 会自动安装正确版本工具链）
+
+对于其他操作系统（如 Windows、macOS），Server Torii 在技术上是兼容的，但未进行任何测试，可能会遇到一些问题。
+Server Torii 的 Nginx 连接器 ngx_torii 仅在 Linux 上进行了测试和使用，其他环境下编译 Nginx 模块是及其少见也不推荐的行为。
 
 
 ## 如何为此项目做贡献？  
