@@ -8,6 +8,27 @@ Server Torii 目前仍在积极的添加新的功能，并且完善部分现有�
 安装前，请确保你的服务器已经安装了适当的环境，详情请参照[环境准备](./prerequisites.md)
 :::
 
+::: danger 警告
+
+如果您的服务器位于中华人民共和国境内。
+
+您的服务器可能无法从 Github 和 Go 下载 Server Torii 源代码和相关依赖.
+
+请注意，使用镜像站点可能会带来安全风险，请确保您信任所使用的镜像站点。
+
+您可以将下面各命令的 `git clone` 命令替换为 GitHub 镜像站点的地址。
+
+您可以通过设置`GOPROXY` 来使用 Go 模块代理，例如：
+使用 [Goproxy.cn](https://goproxy.cn/) 作为 Go 模块代理：
+```sh
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://goproxy.cn,direct
+```
+前往 [Goproxy.cn](https://goproxy.cn/) 获取更多信息
+
+
+:::
+
 安装分为两部分 ngx_torii  和 server_torii
 
 ngx_torii 是一个 Nginx 模块，是 server_torii 的连接器，用于将 Nginx 收到的请求发送给 server_torii 检查
@@ -96,14 +117,6 @@ $ make install
 * 描述： `Server Torii Nginx Module`
 * 参数： `--add-module=/www/server/nginx/src/ngx_torii`
 * 前置脚本：
-::: danger 警告
-
-如果您的服务器位于中华人民共和国境内
-
-您的服务器可能无法从 GitHub 上下载代码 从而导致安装失败
-
-您可以将下面前置脚本的 `git clone https://github.com/Rayzggz/ngx_torii` 替换为GitHub镜像站点的地址
-:::
 
 ```sh
 mkdir -p /www/server/nginx/src
@@ -142,9 +155,6 @@ configure arguments: --user=www --group=www --prefix=/www/server/nginx --add-mod
 
 ```sh
 # 1. 进入宝塔 Nginx 源码目录，下载 ngx_torii 模块代码
-#    如果您的服务器位于中华人民共和国境内
-#    您的服务器可能无法从 GitHub 上下载代码 从而导致安装失败
-#    您可以将下面的 git clone 地址替换为GitHub镜像站点的地址
 mkdir -p /www/server/nginx/src
 cd /www/server/nginx/src
 git clone https://github.com/Rayzggz/ngx_torii
