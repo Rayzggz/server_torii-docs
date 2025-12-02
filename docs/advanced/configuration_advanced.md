@@ -147,7 +147,7 @@ Blocklisted URIs are immediately blocked.
 
 ---
 
-###  ngx_torii Module Configuration
+##  ngx_torii Module Configuration
 The ngx_torii module uses the similar directives as Nginx’s auth_request module.
 
 You can reference the document of ngx_http_auth_request_module `https://nginx.org/en/docs/http/ngx_http_auth_request_module.html`
@@ -218,7 +218,7 @@ location /torii {
 }
 ```
 
-### Usage of Torii-Feature-Control Header
+## Usage of Torii-Feature-Control Header
 This header is used to control the feature switches of Server Torii for the current request.
 The value of this header is a string composed of multiple characters, each representing a feature switch.
 When processing requests, the Server Torii will decide whether to enable or disable certain features based on the value of this header.

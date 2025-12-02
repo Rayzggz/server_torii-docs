@@ -150,7 +150,7 @@ URL 禁止列表
 
 ---
 
-### Nginx 模块 ngx_torii配置
+## Nginx 模块 ngx_torii配置
 
 工作方式可以参考 `https://nginx.org/en/docs/http/ngx_http_auth_request_module.html`
 
@@ -220,7 +220,7 @@ location /torii {
 }
 ```
 
-### Torii-Feature-Control 头部的用法
+## Torii-Feature-Control 头部的用法
 这个头部用于控制请求的功能开关
 这个头部的值是一个字符串 由多个字符组成 每个字符代表一个功能的开关
 Server Torii 在处理请求时会根据这个头部的值来决定启用或者禁用某些功能
