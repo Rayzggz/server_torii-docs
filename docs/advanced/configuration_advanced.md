@@ -68,6 +68,8 @@ ExternalMigration:
 
 ### CAPTCHA：
 CAPTCHA settings, used to challenge users
+This feature currently does not support being enabled simultaneously with ExternalMigration.
+
 #### `secret_key`
 A shared key for encrypting/decrypting the clearance cookie. In clustered setups, all nodes must use the same key to validate cookies.
 #### `captcha_validate_time`
@@ -89,7 +91,10 @@ Allows up to 150 requests per IP every 10 seconds (429 on excess).
 Allows up to 50 requests per IP to the same URI every 10 seconds (429 on excess). Helps mitigate URI‑focused floods.
 
 ### VerifyBot:
-Use User‑Agent and reverse‑DNS to verify legitimate crawlers:
+Use User‑Agent and reverse‑DNS to verify legitimate crawlers
+Only requests from the following search engine crawlers with a UA declaration will be validated, normal user requests will not undergo validation.
+For successfully validated crawler requests, they will be allowed through directly without any additional checks such as CAPTCHA or HTTPFlood, to ensure the efficiency of crawling.
+For failed validation of crawler requests, a 403 Forbidden access response will be returned directly.
 
 verify_google_bot # Googlebot
 
@@ -106,6 +111,7 @@ verify_apple_bot # Applebot
 ### ExternalMigration:
 If the traffic is too high and the server cannot handle it, this configuration can be used to redirect requests to external mitigation facilities such as Cloudflare or waiting room.
 After verification/waiting through an external service, requests will return to Server Torii for access.
+This feature currently does not support being enabled simultaneously with CAPTCHA.
 
 #### `redirect_url`
 The URL address for redirection.
@@ -131,19 +137,19 @@ Allowlisted addresses bypass all checks.
 
 ### IP_BlockList.conf
 One IP (or CIDR) per line
-Blocklisted addresses are immediately blocked.
+Blocklisted addresses are immediately blocked and return 403 Forbidden.
 
 ---
 
 ### URL_AllowList.conf
 One URL pattern (regex) per line
-Allowlisted URIs are immediately blocked.
+Allowlisted URIs bypass all checks.
 
 ---
 
 ### URL_BlockList.conf
 One URL pattern (regex) per line
-Blocklisted URIs are immediately blocked.
+Blocklisted URIs are immediately blocked and return 403 Forbidden.
 
 ---
 
@@ -222,6 +228,7 @@ location /torii {
 This header is used to control the feature switches of Server Torii for the current request.
 The value of this header is a string composed of multiple characters, each representing a feature switch.
 When processing requests, the Server Torii will decide whether to enable or disable certain features based on the value of this header.
+Please ensure that the other configurations for the corresponding features are correctly set in the `Server.yml` configuration.
 This switch control only takes effect for the current request and does not affect settings in the global configuration file.
 
 The position and meaning of each character are as follows:
@@ -240,6 +247,9 @@ Each character can take the following values:
 - '_': Inherit settings from the default configuration file.
 For example:
 - "1_0___1_": Enable IPAllow feature, disable URLAllow feature, enable CAPTCHA feature, other features inherit default configuration.
+
+Taking the switch for CAPTCHA as an example, in this case, you can set the CAPTCHA feature to be off in the configuration file, but by using this request header, you can turn on the CAPTCHA feature.
+Thus, without adding this request header, the CAPTCHA feature is off. However, after adding this request header, the CAPTCHA feature is turned on, achieving the effect of enabling functionality on demand.
 
 You can use this header for flexible configurationYou can use this.
 For example, you can enable or disable certain features for specific URIs through the location configuration in Nginx. 
