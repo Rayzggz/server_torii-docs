@@ -7,13 +7,13 @@ web_path: "/torii" # Server Torii 访问路径
 error_page: "/www/server_torii/config/error_page" # 错误页面存放路径 
 log_path: "/www/server_torii/log/" # 日志存放路径
 node_name: "Server Torii" # 节点名称 用于在输出页面中显示 在分布式部署时可用于区分节点
-connecting_host_headers: # Host 头部 通过这个头部来判断请求的域名
+connecting_host_headers: # Host 请求头 通过这个请求头来判断请求的域名
   - "Torii-Real-Host"
-connecting_ip_headers: # IP 头部 通过这个头部来判断请求的 IP
+connecting_ip_headers: # IP 请求头 通过这个请求头来判断请求的 IP
   - "Torii-Real-IP"
-connecting_uri_headers: # URI 头部 通过这个头部来判断请求的 URI
+connecting_uri_headers: # URI 请求头 通过这个请求头来判断请求的 URI
   - "Torii-Original-URI"
-connecting_feature_control_headers: # 控制 头部 通过这个头部来开关功能
+connecting_feature_control_headers: # 控制 请求头 通过这个请求头来开关功能
   - "Torii-Feature-Control"
 
 sites:
@@ -198,7 +198,7 @@ location /
 
 # 下面这些配置放在 server 块中 用于接收 torii_auth_request 配置的验证请求
 # proxy_set_header 是与 torii.yml 中的配置项对应的 用于传递对应的信息
-# 后面会介绍 Torii-Feature-Control 头部的用法 这个请求头需要放在 /torii/checker 和 /torii 两个 location 中 并且值要保持一致
+# 后面会介绍 Torii-Feature-Control 请求头的用法 这个请求头需要放在 /torii/checker 和 /torii 两个 location 中 并且值要保持一致
 # 可以把这个 proxy_set_header Torii-Feature-Control "________"; 放到一个单独的文件中，然后通过 include 引入 以保证两个 location 中的值一致
 location /torii/checker {
     proxy_pass http://127.0.0.1:25555/torii/checker;
@@ -257,6 +257,6 @@ Server Torii 在处理请求时会根据这个请求头的值来决定启用或�
 以 CAPTCHA 的开关为例子，也就是说，在这种情况下，你可以在配置文件中，将 CAPTCHA 功能设置为关闭，但是通过这个请求头，将 CAPTCHA 功能开启
 这样在没有加上这个请求头的情况下，CAPTCHA 功能是关闭的，但是在加上这个请求头后，CAPTCHA 功能被开启，从而实现了按需开启功能的效果
 
-你可以利用这个头部来灵活配置
+你可以利用这个请求头来灵活配置
 例如，你可以通过 Nginx 配置的 location 来针对特定 URI 开启或者关闭某些功能
 你也可以通过外部脚本，例如 Shell Lua 等等 来依据后端负载、请求数量等动态调整功能开关，以达到最佳的防护效果和性能表现。
