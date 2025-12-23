@@ -79,6 +79,10 @@ Time (in seconds) allowed to complete the captcha after the challenge page loads
 #### `hcaptcha_secret`
 Your hCaptcha secret key for server‑side verification.
 
+Additionally, you need to integrate the hcaptcha verification widget on the HTML page. Please modify the `config/error_page/CAPTCHA.html` file and add your hcaptcha site key.
+For more details, refer to [hCaptcha Official Documentation](https://docs.hcaptcha.com/#add-the-hcaptcha-widget-to-your-webpage).
+
+
 ### HTTPFlood：
 Speed limit settings for HTTP flood protection.
 #### `HTTPFloodSpeedLimit`

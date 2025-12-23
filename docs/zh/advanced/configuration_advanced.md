@@ -80,6 +80,8 @@ ExternalMigration:
 #### `hcaptcha_secret`
 hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
 
+另外，需要在前端页面中集成 hcaptcha 的验证码小部件，请修改`config/error_page/CAPTCHA.html`文件，添加你的 hcaptcha site key。
+有关更多详细信息，请参阅 [hCaptcha 官方文档](https://docs.hcaptcha.com/#add-the-hcaptcha-widget-to-your-webpage).
 
 ### HTTPFlood:
 速率限制 用于CC 防御
