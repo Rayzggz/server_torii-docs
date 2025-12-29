@@ -3,7 +3,6 @@ import {defineUserConfig} from 'vuepress'
 import {webpackBundler} from '@vuepress/bundler-webpack'
 
 export default defineUserConfig({
-    base: '/server_torii-docs/',
     locales: {
         '/': {
             lang: 'en-US',
