@@ -3,6 +3,7 @@ import {defineUserConfig} from 'vuepress'
 import {webpackBundler} from '@vuepress/bundler-webpack'
 
 export default defineUserConfig({
+    base: process.env.docsBaseUrl === undefined ? "/" : process.env.docsBaseUrl,
     locales: {
         '/': {
             lang: 'en-US',
