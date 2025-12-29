@@ -45,12 +45,18 @@ CAPTCHA:
   captcha_validate_time: 600
   captcha_challenge_session_timeout: 120
   hcaptcha_secret: ""
+  CaptchaFailureLimit:
+    - "300/300s"
+  failure_block_duration: 1200
 HTTPFlood:
   enabled: true
   HTTPFloodSpeedLimit:
     - "150/10s"
   HTTPFloodSameURILimit:
     - "50/10s"
+  HTTPFloodFailureLimit:
+    - "300/300s"
+  failure_block_duration: 1200
 VerifyBot:
   enabled: true
   verify_google_bot: true
@@ -78,6 +84,23 @@ Time (in seconds) for which a passed captcha remains valid before re‑challenge
 Time (in seconds) allowed to complete the captcha after the challenge page loads.
 #### `hcaptcha_secret`
 Your hCaptcha secret key for server‑side verification.
+#### `CaptchaFailureLimit`
+Rate limit settings for failed attempts.
+
+If you set a: `  - "300/300s"`, then:
+Allows up to 300 failed attempts per IP every 300 seconds. A 403 response is returned on excess. And blocks the IP for the duration specified in `failure_block_duration`.
+
+Note: Any failed attempt counts towards this limit, including request page, submitting incorrect CAPTCHA.
+If a user get a normal HTML page for upstream service in some case, then request JS/CSS/Images from that page, each of these static resource requests will also count as a failed attempt if the user has not yet passed the CAPTCHA challenge.
+In such cases, user may not get the CAPTCHA challenge page since they can access the normal HTML page. User can try to refresh the page to get the challenge again.
+It is recommended to set a reasonable limit to avoid excessive blocking of legitimate users.
+
+#### `failure_block_duration`
+Duration (in seconds) to block IPs exceeding the failure limit.
+
+When Any IP exceeds the defined `CaptchaFailureLimit`, it will be blocked for the duration specified here, receiving a 403 Forbidden response.
+All failed attempts in `CaptchaFailureLimit` Counter will be cleared, which means the user can try again after the block duration.
+
 
 Additionally, you need to integrate the hcaptcha verification widget on the HTML page. Please modify the `config/error_page/CAPTCHA.html` file and add your hcaptcha site key.
 For more details, refer to [hCaptcha Official Documentation](https://docs.hcaptcha.com/#add-the-hcaptcha-widget-to-your-webpage).
@@ -91,8 +114,26 @@ Allows up to 150 requests per IP every 10 seconds (429 on excess).
 
 #### `HTTPFloodSameURILimit`
 `  - "50/10s"`
-
 Allows up to 50 requests per IP to the same URI every 10 seconds (429 on excess). Helps mitigate URI‑focused floods.
+
+#### `HTTPFloodFailureLimit`
+Rate limit settings for above 429 attempts.
+This means if an IP violates the above HTTPFlood limits too many times, it will be blocked.
+
+
+If you set a: `  - "300/300s"`, then:
+Allows up to 300 failed attempts per IP every 300 seconds. A 403 response is returned on excess. And blocks the IP for the duration specified in `failure_block_duration`.
+
+Note: If a user get a normal HTML page for upstream service in some case, then request JS/CSS/Images from that page, each of these static resource requests will also count as a failed attempt.
+In such cases, User may not get the 429 page since they can access the normal HTML page. User can try to refresh the page to get the 429 page.
+It is recommended to set a reasonable limit to avoid excessive blocking of legitimate users.
+
+#### `failure_block_duration`
+Duration (in seconds) to block IPs exceeding the failure limit.
+
+When Any IP exceeds the defined `HTTPFloodFailureLimit`, it will be blocked for the duration specified here, receiving a 403 Forbidden response.
+All failed attempts in `HTTPFloodFailureLimit` Counter will be cleared, which means the user can try again after the block duration.
+
 
 ### VerifyBot:
 Use User‑Agent and reverse‑DNS to verify legitimate crawlers

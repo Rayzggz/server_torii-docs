@@ -44,12 +44,18 @@ CAPTCHA:
   captcha_validate_time: 600
   captcha_challenge_session_timeout: 120
   hcaptcha_secret: ""
+  CaptchaFailureLimit:
+    - "300/300s"
+  failure_block_duration: 1200
 HTTPFlood:
   enabled: true
   HTTPFloodSpeedLimit:
     - "150/10s"
   HTTPFloodSameURILimit:
     - "50/10s"
+  HTTPFloodFailureLimit:
+    - "300/300s"
+  failure_block_duration: 1200
 VerifyBot:
   enabled: true
   verify_google_bot: true
@@ -67,7 +73,7 @@ ExternalMigration:
 
 
 ### CAPTCHA:
-验证码质询 用于拦截恶意请求
+人机验证质询 用于拦截恶意请求
 此功能当前不支持与 ExternalMigration 同时启用
 
 #### `secret_key`
@@ -78,9 +84,26 @@ ExternalMigration:
 #### `captcha_challenge_session_timeout`
 人机验证的会话超时时间，单位是秒，即用户在打开人机验证页面后，要在多长时间内完成验证
 #### `hcaptcha_secret`
-hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
+hcaptcha 的 secret key 用于验证用户的 hcaptcha 人机验证
+#### `CaptchaFailureLimit`
+失败尝试的速率限制设置
 
-另外，需要在前端页面中集成 hcaptcha 的验证码小部件，请修改`config/error_page/CAPTCHA.html`文件，添加你的 hcaptcha site key。
+如果您设置为：`  - "300/300s"`，则：
+允许每个IP在300秒内最多进行300次失败尝试。超出限制时将返回403响应，并根据`failure_block_duration`中指定的持续时间拉黑该IP。
+
+注意：任何失败尝试都计入此限制，包括请求页面、提交错误的人机验证。
+如果用户在某些情况下获得了上游服务的正常HTML页面，然后从该页面请求 JS / CSS / 图像，如果用户尚未通过人机验证挑战，则这些每一个静态资源请求也将计为一次失败尝试。
+在这种情况下，因为用户可以访问正常的HTML页面，并尝试请求静态资源，用户可能无法获取人机验证挑战页面。用户可以尝试刷新页面以再次获取挑战。
+建议设定合理的限制，以避免对合法用户造成过度封锁。
+
+#### `failure_block_duration`
+超过失败限制后拉黑IP地址的持续时间（以秒为单位）。
+
+当任何IP超过定义的`CaptchaFailureLimit`时，将根据此处指定的持续时间被拉黑，并收到403禁止访问响应。
+所有在`CaptchaFailureLimit`计数器中的失败尝试将被清除，这意味着用户可以在拉黑结束后再次尝试。
+
+
+另外，需要在前端页面中集成 hcaptcha 的人机验证小部件，请修改`config/error_page/CAPTCHA.html`文件，添加你的 hcaptcha site key。
 有关更多详细信息，请参阅 [hCaptcha 官方文档](https://docs.hcaptcha.com/#add-the-hcaptcha-widget-to-your-webpage).
 
 ### HTTPFlood:
@@ -94,6 +117,22 @@ hcaptcha 的 secret key 用于验证用户的 hcaptcha 验证码
 
 一个速率限制器，表示每个IP在 10 秒内允许 50 次相同的 URI ，超过这个限制会返回 429 错误
 这个配置可以很好地缓解对于同一个 URI 的攻击
+
+#### `HTTPFloodFailureLimit`
+针对超过429次尝试的速率限制设置。
+这意味着如果一个IP违反上述HTTPFlood限制太多次，它将被拉黑。
+
+如果您设置为：` - "300/300s"`，则：
+允许每个IP在300秒内最多失败300次。超出时返回403响应，并根据`failure_block_duration`中指定的持续时间拉黑该IP。
+
+注意：如果用户在某些情况下获得了上游服务的正常HTML页面，然后从该页面请求JS/CSS/图像，则这些每一个静态资源请求也将计入失败尝试。在这种情况下，用户可能不会看到429页面，因为他们可以访问正常的HTML页面。用户可以尝试刷新页面以获取429页面。
+建议设置合理的限制，以避免过度拉黑合法用户。
+
+#### `failure_block_duration`
+超过失败限制后拉黑IP地址的持续时间（以秒为单位）。
+
+当任何IP超过定义的`HTTPFloodFailureLimit`时，将根据此处指定的持续时间进行拉黑，并收到403禁止访问响应。
+所有在`HTTPFloodFailureLimit`计数器中的失败尝试将被清除，这意味着用户可以在解除拉黑后再次尝试。
 
 ### VerifyBot:
 通过 UA 和 反向DNS 来验证是否是真实的搜索引擎爬虫
