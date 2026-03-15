@@ -44,6 +44,7 @@ cd /www/server_torii
 2. 下载 server_torii
 ```sh
 git clone https://github.com/Rayzggz/server_torii.git
+git checkout 1.4.0 --force
 cd server_torii
 ```
 

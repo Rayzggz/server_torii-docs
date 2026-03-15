@@ -26,6 +26,7 @@ cd /www/server_torii
 2.Clone the repository
 ```sh
 git clone https://github.com/Rayzggz/server_torii.git
+git checkout 1.4.0 --force
 cd server_torii
 ```
 
