@@ -218,6 +218,12 @@ Default:   —
 Context:   http, server, location
 ```
 
+::: warning 安全要求
+`Torii-Feature-Control` 是从 Nginx 到 Server Torii 的受信任内部请求头。它必须由反向代理生成；不得接受或转发客户端提供的值，也禁止使用 `$http_torii_feature_control` 设置它。Server Torii 的 `25555` 端口必须保持为内部端口，禁止暴露到公网。
+:::
+
+只有当前配置层级没有定义任何 `proxy_set_header` 指令时，Nginx 才会继承上一级的 `proxy_set_header`。因此，不要只在 `http` 或 `server` 层配置 `Torii-Feature-Control`。应像下面一样在每个 Torii location 中显式设置，或者将同一条指令放入一个由所有 Torii location 引用的 `include` 文件中。
+
 例子：
 这个是一个反向代理站点 将用户的请求发送到本地的 3001 端口 并且让这些请求通过 Server Torii 的清洗
 ```nginx
@@ -258,6 +264,7 @@ location @torii_page {
     proxy_set_header Torii-Real-IP $remote_addr;
     proxy_set_header Torii-Original-URI $request_uri;
     proxy_set_header Torii-Real-Host $host;
+    proxy_set_header Torii-Feature-Control "________";
     proxy_intercept_errors off;
 }
 
@@ -272,6 +279,8 @@ location /torii {
 ```
 
 ## Torii-Feature-Control 请求头的用法
+> 这是一个受信任的内部控制请求头。它只能由反向代理生成，绝不能由外部客户端控制。
+
 这个请求头用于控制请求的功能开关
 这个请求头的值是一个字符串 由多个字符组成 每个字符代表一个功能的开关
 Server Torii 在处理请求时会根据这个请求头的值来决定启用或者禁用某些功能
@@ -292,6 +301,9 @@ Server Torii 在处理请求时会根据这个请求头的值来决定启用或�
 - '1'：启用对应的功能，这个会覆盖配置文件中的设置
 - '0'：禁用对应的功能，这个会覆盖配置文件中的设置
 - '_'：继承默认配置文件中的设置
+
+由于 `'0'` 可以关闭配置文件中已经启用的功能，保护此请求头是强制性的安全要求，而不是可选建议。禁止从 `$http_torii_feature_control` 或其他任何客户端可控的值生成该请求头。
+
 例如：
 - "1_0___1_"：启用 IPAllow 功能，禁用 URLAllow 功能，启用 CAPTCHA 功能，其他功能继承默认配置
 
